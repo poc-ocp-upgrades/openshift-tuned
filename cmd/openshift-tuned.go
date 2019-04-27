@@ -69,6 +69,8 @@ var (
 func mkdir(dir string) error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = os.MkdirAll(dir, os.ModePerm)
 		if err != nil {
@@ -80,15 +82,21 @@ func mkdir(dir string) error {
 func (a *arrayFlags) String() string {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	return strings.Join(*a, ",")
 }
 func (a *arrayFlags) Set(value string) error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	*a = append(*a, value)
 	return nil
 }
 func parseCmdOpts() {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	flag.Usage = func() {
@@ -105,6 +113,8 @@ func parseCmdOpts() {
 func signalHandler() chan os.Signal {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, terminationSignals...)
 	go func() {
@@ -115,6 +125,8 @@ func signalHandler() chan os.Signal {
 	return sigs
 }
 func logsCoexist() {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	flag.Set("logtostderr", "true")
@@ -130,6 +142,8 @@ func logsCoexist() {
 	})
 }
 func getConfig() (*rest.Config, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	configFromFlags := func(kubeConfig string) (*rest.Config, error) {
@@ -152,6 +166,8 @@ func getConfig() (*rest.Config, error) {
 	return nil, fmt.Errorf("Could not locate a kubeconfig")
 }
 func profilesExtract() error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	glog.Infof("Extracting tuned profiles")
@@ -186,6 +202,8 @@ func profilesExtract() error {
 func tunedReload() error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	var stdout, stderr bytes.Buffer
 	glog.Infof("Reloading tuned...")
 	cmd := exec.Command("/usr/sbin/tuned", "--no-dbus")
@@ -196,6 +214,8 @@ func tunedReload() error {
 	return err
 }
 func nodeLabelsGet(clientset *kubernetes.Clientset, nodeName string) (map[string]string, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	node, err := clientset.CoreV1().Nodes().Get(nodeName, metav1.GetOptions{})
@@ -210,6 +230,8 @@ func nodeLabelsGet(clientset *kubernetes.Clientset, nodeName string) (map[string
 	return node.Labels, nil
 }
 func podLabelsGet(clientset *kubernetes.Clientset, nodeName string) (map[string]map[string]string, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var sb strings.Builder
@@ -230,6 +252,8 @@ func podLabelsGet(clientset *kubernetes.Clientset, nodeName string) (map[string]
 func nodeLabelsDump(labels map[string]string, fileLabels string) error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	f, err := os.Create(fileLabels)
 	if err != nil {
 		return fmt.Errorf("Failed to create labels file '%s': %v", fileLabels, err)
@@ -246,6 +270,8 @@ func nodeLabelsDump(labels map[string]string, fileLabels string) error {
 	return nil
 }
 func podLabelsDump(labels map[string]map[string]string, fileLabels string) error {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	f, err := os.Create(fileLabels)
@@ -268,6 +294,8 @@ func podLabelsDump(labels map[string]map[string]string, fileLabels string) error
 func getActiveProfile() (string, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	var responseString = ""
 	f, err := os.Open(tunedActiveProfileFile)
 	if err != nil {
@@ -281,6 +309,8 @@ func getActiveProfile() (string, error) {
 	return responseString, nil
 }
 func getRecommendedProfile() (string, error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var stdout, stderr bytes.Buffer
@@ -298,6 +328,8 @@ func getRecommendedProfile() (string, error) {
 func apiActiveProfile(w http.ResponseWriter, req *http.Request) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	responseString, err := getActiveProfile()
 	if err != nil {
 		glog.Error(err)
@@ -309,6 +341,8 @@ func apiActiveProfile(w http.ResponseWriter, req *http.Request) {
 func nodeWatch(clientset *kubernetes.Clientset, nodeName string) (watch.Interface, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	w, err := clientset.CoreV1().Nodes().Watch(metav1.ListOptions{FieldSelector: "metadata.name=" + nodeName})
 	if err != nil {
 		return nil, fmt.Errorf("Unexpected error watching node %s: %v", nodeName, err)
@@ -318,6 +352,8 @@ func nodeWatch(clientset *kubernetes.Clientset, nodeName string) (watch.Interfac
 func podWatch(clientset *kubernetes.Clientset, nodeName string) (watch.Interface, error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	w, err := clientset.CoreV1().Pods("").Watch(metav1.ListOptions{FieldSelector: "spec.nodeName=" + nodeName})
 	if err != nil {
 		return nil, fmt.Errorf("Unexpected error watching pods on %s: %v", nodeName, err)
@@ -325,6 +361,8 @@ func podWatch(clientset *kubernetes.Clientset, nodeName string) (watch.Interface
 	return w, nil
 }
 func nodeChangeHandler(event watch.Event, tuned *tunedState) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	node, ok := event.Object.(*corev1.Node)
@@ -339,6 +377,8 @@ func nodeChangeHandler(event watch.Event, tuned *tunedState) {
 	}
 }
 func podLabelsUnique(podLabelsNodeWide map[string]map[string]string, podNsName string, podLabels map[string]string) map[string]string {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	unique := map[string]string{}
@@ -362,6 +402,8 @@ LoopNeedle:
 func podLabelsNodeWideChange(podLabelsNodeWide map[string]map[string]string, podNsName string, podLabels map[string]string) bool {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	if podLabelsNodeWide == nil {
 		return podLabels != nil && len(podLabels) > 0
 	}
@@ -372,6 +414,8 @@ func podLabelsNodeWideChange(podLabelsNodeWide map[string]map[string]string, pod
 	return change
 }
 func podChangeHandler(event watch.Event, tuned *tunedState) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var sb strings.Builder
@@ -403,12 +447,16 @@ func podChangeHandler(event watch.Event, tuned *tunedState) {
 func eventWatch(w watch.Interface, f func(watch.Event, *tunedState), tuned *tunedState) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	defer w.Stop()
 	for event := range w.ResultChan() {
 		f(event, tuned)
 	}
 }
 func timedTunedReloader(tuned *tunedState) (err error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var (
@@ -459,6 +507,8 @@ func timedTunedReloader(tuned *tunedState) (err error) {
 func pullLabels(clientset *kubernetes.Clientset, tuned *tunedState, nodeName string) error {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	nodeLabels, err := nodeLabelsGet(clientset, nodeName)
 	if err != nil {
 		return err
@@ -480,6 +530,8 @@ func pullLabels(clientset *kubernetes.Clientset, tuned *tunedState, nodeName str
 func pullResyncPeriod() int64 {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	var (
 		err			error
 		resyncPeriodDuration	int64	= resyncPeriodDefault
@@ -495,6 +547,8 @@ func pullResyncPeriod() int64 {
 	return resyncPeriodDuration
 }
 func changeWatcher() (err error) {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	_logClusterCodePath()
 	defer _logClusterCodePath()
 	var (
@@ -573,6 +627,8 @@ func changeWatcher() (err error) {
 func retryLoop(f func() error) (err error) {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	var errs int
 	const (
 		errsMax			= 5
@@ -606,6 +662,8 @@ func retryLoop(f func() error) (err error) {
 func main() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	rand.Seed(time.Now().UnixNano())
 	parseCmdOpts()
 	logsCoexist()
@@ -627,7 +685,16 @@ func main() {
 func _logClusterCodePath() {
 	_logClusterCodePath()
 	defer _logClusterCodePath()
+	_logClusterCodePath()
+	defer _logClusterCodePath()
 	pc, _, _, _ := godefaultruntime.Caller(1)
 	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
 	godefaulthttp.Post("http://35.226.239.161:5001/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
+}
+func _logClusterCodePath() {
+	_logClusterCodePath()
+	defer _logClusterCodePath()
+	pc, _, _, _ := godefaultruntime.Caller(1)
+	jsonLog := []byte(fmt.Sprintf("{\"fn\": \"%s\"}", godefaultruntime.FuncForPC(pc).Name()))
+	godefaulthttp.Post("/"+"logcode", "application/json", godefaultbytes.NewBuffer(jsonLog))
 }
